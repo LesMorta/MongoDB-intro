@@ -8,7 +8,7 @@ async function main() {
     await generateSchemes();
     const departments = await Department.find();
     if (departments.length === 0) {
-        console.log('No data found, creating example data...');
+        console.log('Дані не знайдено, створення прикладу даних...');
         await createExampleData();
     }
     await performBasic();
@@ -17,20 +17,19 @@ async function main() {
 
 async function connectToDB() {
     try{
-        // await mongoose.connect('mongodb+srv://main:2559@cluster0.bajz98z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
         await mongoose.connect('mongodb://localhost:27017/CIS');
         console.log('Connected to DB');
     } catch (err) {
-        console.error('Error connecting to PostgreSQL:', err);
+        console.error('Помилка підключення до MongoDB:', err);
     }
 }
 async function disconnectFromDB() {
-    console.log('Disconnecting from DB');
+    console.log('Відключення від БД');
     try {
         await mongoose.disconnect();
-        console.log('Disconnected from DB successfully');
+        console.log('Успішно відключено від БД');
     } catch (err) {
-        console.error('Error disconnecting from DB:', err);
+        console.error('Невдалося від`єднатися від БД:', err);
     }
 }
 
@@ -93,7 +92,7 @@ async function generateSchemes() {
         Diagnosis,
         MedicalHistory
     };
-    console.log('Schemas generated');
+    console.log('Схеми згенерована');
 }
 
 async function createExampleData() {
@@ -118,22 +117,18 @@ async function createExampleData() {
       const medicalhistory1 = await MedicalHistory.create({ patient: patient1._id, doctor: doctor1._id, diagnosis: diagnosis1._id, treatment: 'Administered medication as prescribed', dateOfIllness: new Date('2023-01-15'), dateOfTreatment: new Date('2023-01-20'), typeOfTreatment: 'Medication' });
       const medicalhistory2 = await MedicalHistory.create({ patient: patient2._id, doctor: doctor2._id, diagnosis: diagnosis2._id, treatment: 'Bed rest and fluids', dateOfIllness: new Date('2023-02-10'), dateOfTreatment: new Date('2023-02-15'), typeOfTreatment: 'Rest' });
 
-    console.log('Example data created successfully.');
+    console.log('Данні успішно створені.');
     } catch (error) {
-        console.error('Error creating example data:', error);
+        console.error('Помилка ствопення данних:', error);
     }
 }
 async function performBasic() {
-    console.log('---------Performing basic operations---------');
-    // Example usage of CRUD operations
     await readDepartments();
     await createDepartment();
     await updateDepartment();
     await deleteDepartment();
-    console.log('---------Basic operations performed---------');
 }
 
-// CRUD operations for Department model
 async function readDepartments() {
     const departments = await Department.find();
     console.log('Departments:', departments);
@@ -141,15 +136,15 @@ async function readDepartments() {
 
 async function createDepartment() {
     const newDepartment = await Department.create({ departmentName: 'New Department', floor: 4, officeNumber: 401, nameOfTheManager: 'Manager Name' });
-    console.log('New department:', newDepartment);
+    console.log('Новий department:', newDepartment);
 }
 
 async function updateDepartment() {
     const result = await Department.updateOne({ departmentName: 'New Department' }, { officeNumber: 402 });
-    console.log('Updated department:', result);
+    console.log('Оновлено department:', result);
 }
 
 async function deleteDepartment() {
     const result = await Department.deleteOne({ departmentName: 'New Department' });
-    console.log('Deleted department:', result);
+    console.log('Видалено department:', result);
 }
